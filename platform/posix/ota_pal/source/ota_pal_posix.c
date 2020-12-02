@@ -403,7 +403,11 @@ static OtaErr_t Openssl_DigestVerify( EVP_MD_CTX * pSigContext,
     return result;
 }
 
-/* Verify the signature of the specified file using OpenSSL. */
+/********************************************/
+
+/* OPENSSL version
+ * /* Verify the signature of the specified file.
+ * /*********************************************/
 
 static OtaErr_t otaPal_CheckFileSignature( OtaFileContext_t * const C )
 {
@@ -458,21 +462,21 @@ static OtaErr_t otaPal_CheckFileSignature( OtaFileContext_t * const C )
 
 OtaErr_t otaPal_ResetDevice( OtaFileContext_t * const C )
 {
-    ( void ) C;
+    OtaErr_t result = OTA_ERR_NONE;
 
     /* Return no error.  linux implementation does not reset device. */
-    return OTA_ERR_NONE;
+    return result;
 }
 
 /*-----------------------------------------------------------*/
 
 OtaErr_t otaPal_ActivateNewImage( OtaFileContext_t * const C )
 {
-    ( void ) C;
+    OtaErr_t result = OTA_ERR_NONE;
 
     /* Return no error. linux implementation simply does nothing on activate.
     * To run the new firmware image, double click the newly downloaded exe */
-    return OTA_ERR_NONE;
+    return result;
 }
 
 /*
@@ -485,8 +489,6 @@ OtaErr_t otaPal_SetPlatformImageState( OtaFileContext_t * const C,
 {
     OtaErr_t result = OTA_ERR_NONE;
     FILE * pPlatformImageState = NULL;
-
-    ( void ) C;
 
     if( ( eState != OtaImageStateUnknown ) && ( eState <= OtaLastImageState ) )
     {
@@ -554,8 +556,6 @@ OtaPalImageState_t otaPal_GetPlatformImageState( OtaFileContext_t * const C )
     FILE * pPlatformImageState;
     OtaImageState_t eSavedAgentState = OtaImageStateUnknown;
     OtaPalImageState_t ePalState = OtaPalImageStateUnknown;
-
-    ( void ) C;
 
     /* Linux port using standard library */
     /* coverity[misra_c_2012_rule_21_6_violation] */

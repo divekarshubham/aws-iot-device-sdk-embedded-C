@@ -27,6 +27,7 @@
 #define _OTA_PAL_H_
 
 #include "ota.h"
+#include "ota_platform_interface.h"
 
 /**
  * @brief Code signing certificate
@@ -63,7 +64,7 @@ static const char signingcredentialSIGNING_CERTIFICATE_PEM[] = "Paste code signi
  * OTA_ERR_NONE is returned when aborting access to the open file was successful.
  * OTA_ERR_FILE_ABORT is returned when aborting access to the open file context was unsuccessful.
  */
-OtaErr_t otaPal_Abort( OtaFileContext_t * const C );
+OtaPalStatus_t otaPal_Abort( OtaFileContext_t * const C );
 
 /**
  * @brief Create a new receive file for the data chunks as they come in.
@@ -88,7 +89,7 @@ OtaErr_t otaPal_Abort( OtaFileContext_t * const C );
  * OTA_ERR_BOOT_INFO_CREATE_FAILED is returned if the bootloader information file creation fails.
  * OTA_ERR_RX_FILE_CREATE_FAILED is returned for other errors creating the file in the device's non-volatile memory.
  */
-OtaErr_t otaPal_CreateFileForRx( OtaFileContext_t * const C );
+OtaPalStatus_t otaPal_CreateFileForRx( OtaFileContext_t * const C );
 
 /* @brief Authenticate and close the underlying receive file in the specified OTA context.
  *
@@ -113,7 +114,7 @@ OtaErr_t otaPal_CreateFileForRx( OtaFileContext_t * const C );
  * OTA_ERR_BAD_SIGNER_CERT is returned for errors in the certificate itself.
  * OTA_ERR_FILE_CLOSE is returned when closing the file fails.
  */
-OtaErr_t otaPal_CloseFile( OtaFileContext_t * const C );
+OtaPalStatus_t otaPal_CloseFile( OtaFileContext_t * const C );
 
 /**
  * @brief Write a block of data to the specified file at the given offset.
@@ -150,7 +151,7 @@ int16_t otaPal_WriteBlock( OtaFileContext_t * const C,
  * @return The OTA PAL layer error code combined with the MCU specific error code. See OTA Agent
  * error codes information in ota.h.
  */
-OtaErr_t otaPal_ActivateNewImage( OtaFileContext_t * const C );
+OtaPalStatus_t otaPal_ActivateNewImage( OtaFileContext_t * const C );
 
 /**
  * @brief Reset the device.
@@ -164,7 +165,7 @@ OtaErr_t otaPal_ActivateNewImage( OtaFileContext_t * const C );
  * error codes information in ota.h.
  */
 
-OtaErr_t otaPal_ResetDevice( OtaFileContext_t * const C );
+OtaPalStatus_t otaPal_ResetDevice( OtaFileContext_t * const C );
 
 /**
  * @brief Attempt to set the state of the OTA update image.
@@ -185,7 +186,7 @@ OtaErr_t otaPal_ResetDevice( OtaFileContext_t * const C );
  *   OTA_ERR_REJECT_FAILED: failed to roll back the update image as requested by OtaImageStateRejected.
  *   OTA_ERR_COMMIT_FAILED: failed to make the update image permanent as requested by OtaImageStateAccepted.
  */
-OtaErr_t otaPal_SetPlatformImageState( OtaFileContext_t * const C,
+OtaPalStatus_t otaPal_SetPlatformImageState( OtaFileContext_t * const C,
                                        OtaImageState_t eState );
 
 /**

@@ -502,7 +502,7 @@ OtaPalStatus_t otaPal_SetPlatformImageState( OtaFileContext_t * const C,
 
         /* Linux port using standard library */
         /* coverity[misra_c_2012_rule_21_6_violation] */
-        pPlatformImageState = fopen( "PlatformImageState.txt", "w+b" ); /*lint !e586
+        pPlatformImageState = fopen( imageStateFile , "w+b" ); /*lint !e586
                                                                * C standard library call is being used for portability. */
 
         if( pPlatformImageState != NULL )
@@ -572,7 +572,7 @@ OtaPalImageState_t otaPal_GetPlatformImageState( OtaFileContext_t * const C )
 
     /* Linux port using standard library */
     /* coverity[misra_c_2012_rule_21_6_violation] */
-    pPlatformImageState = fopen( "PlatformImageState.txt", "r+b" ); /*lint !e586
+    pPlatformImageState = fopen( imageStateFile, "r+b" ); /*lint !e586
                                                            * C standard library call is being used for portability. */
 
     if( pPlatformImageState != NULL )

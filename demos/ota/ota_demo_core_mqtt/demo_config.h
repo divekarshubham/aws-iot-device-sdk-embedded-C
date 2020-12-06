@@ -56,8 +56,6 @@
  * #define AWS_IOT_ENDPOINT               "...insert here..."
  */
 
-#define AWS_IOT_ENDPOINT               "...insert here..."
-
 /**
  * @brief AWS IoT MQTT broker port number.
  *
@@ -68,17 +66,6 @@
  */
 #define AWS_MQTT_PORT    ( 8883 )
 
-/**
- * @brief AWS IoT Core server port number for HTTPS connections.
- *
- * For this demo, an X.509 certificate is used to verify the client.
- *
- * @note Port 443 requires use of the ALPN TLS extension with the ALPN protocol
- * name being x-amzn-http-ca. When using port 8443, ALPN is not required.
- */
-#ifndef AWS_HTTPS_PORT
-    #define AWS_HTTPS_PORT    443
-#endif
 
 /**
  * @brief Path of the file containing the server's root CA certificate.
@@ -110,7 +97,7 @@
  *
  * #define CLIENT_CERT_PATH    "...insert here..."
  */
-#define CLIENT_CERT_PATH    "...insert here..."
+
 /**
  * @brief Path of the file containing the client's private key.
  *
@@ -122,7 +109,7 @@
  *
  * #define CLIENT_PRIVATE_KEY_PATH    "...insert here..."
  */
-#define CLIENT_PRIVATE_KEY_PATH    "...insert here..."
+
 /**
  * @brief MQTT client identifier.
  *
@@ -165,6 +152,6 @@
  * @brief The name of the library used and its version, following an "@"
  * symbol.
  */
-#define OTA_LIB                  "otalib@1.0.0"
+#define OTA_LIB                   "otalib@1.0.0"
 
 #endif /* ifndef DEMO_CONFIG_H */

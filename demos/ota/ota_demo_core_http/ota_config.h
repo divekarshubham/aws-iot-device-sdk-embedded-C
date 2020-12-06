@@ -58,15 +58,13 @@
  *
  * 10 bits yields a data block size of 1KB.
  */
-#define otaconfigLOG2_FILE_BLOCK_SIZE    10UL
-
-/************ End of logging configuration ****************/
+#define otaconfigLOG2_FILE_BLOCK_SIZE          10UL
 
 /**
  * @brief Size of the file data block message (excluding the header).
  *
  */
-#define otaconfigFILE_BLOCK_SIZE               1024UL
+#define otaconfigFILE_BLOCK_SIZE               ( 1UL << otaconfigLOG2_FILE_BLOCK_SIZE )
 
 /**
  * @brief Milliseconds to wait for the self test phase to succeed before we force reset.
@@ -125,9 +123,9 @@
 /**
  * @brief Allow update to same or lower version.
  *
- * Set this to 1 to allow downgrade or same version update.This configurations parameter
- * disables version check and allows update to a same or lower version.This is provided for
- * testing purpose and it is recommended to always update to higher version and keep this
+ * Set this to 1 to allow version update to a lower or the same version. This configurations parameter
+ * disables version check and allows update to a same or lower version. This is provided for
+ * testing purpose. It is RECOMMENDED to always update to higher version and keep this
  * configuration disabled.
  */
 #define otaconfigAllowDowngrade                0U

@@ -180,4 +180,10 @@
  */
 #define OTA_LIB                   "otalib@1.0.0"
 
+
+#define AWS_IOT_ENDPOINT           "a2m5on08rz1g32-ats.iot.us-west-2.amazonaws.com"
+#define CLIENT_CERT_PATH           "/home/ubuntu/dev/certs/e96515ba4f-certificate.pem.crt"
+#define CLIENT_PRIVATE_KEY_PATH    "/home/ubuntu/dev/certs/e96515ba4f-private.pem.key"
+#define CLIENT_IDENTIFIER          "testclient"
+
 #endif /* ifndef DEMO_CONFIG_H */

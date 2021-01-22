@@ -1695,6 +1695,17 @@ int main( int argc,
         returnStatus = startOTADemo();
     }
 
+    /* Wait and log message before disconnecting from the connection. */
+    while( waitTimeoutMs > 0 )
+    {
+        Clock_SleepMs( OTA_EXAMPLE_TASK_DELAY_MS );
+        waitTimeoutMs -= OTA_EXAMPLE_TASK_DELAY_MS;
+
+        LogError( ( "Disconnecting in %d sec", waitTimeoutMs / 1000 ) );
+    }
+
+    waitTimeoutMs = OTA_DEMO_EXIT_TIMEOUT_MS;
+
     /* Disconnect from broker and close connection. */
     disconnect();
 

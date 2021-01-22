@@ -1327,6 +1327,11 @@ static OtaMqttStatus_t mqttPublish( const char * const pacTopic,
         mqttStatus = MQTT_Publish( pMqttContext,
                                    &publishInfo,
                                    MQTT_GetPacketId( pMqttContext ) );
+        if( qos == 1 )
+        {
+            /* Loop to receive packet from transport interface. */
+            mqttStatus = MQTT_ReceiveLoop( &mqttContext, MQTT_PROCESS_LOOP_TIMEOUT_MS );
+        }
 
         pthread_mutex_unlock( &mqttMutex );
     }

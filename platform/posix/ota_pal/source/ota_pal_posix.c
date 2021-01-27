@@ -438,12 +438,12 @@ OtaPalStatus_t otaPal_CreateFileForRx( OtaFileContext_t * const C )
                 if( C->pFile != NULL )
                 {
                     result = OTA_PAL_COMBINE_ERR( OtaPalSuccess, 0 );
-                    LogInfo( ( "Receive file created." ) );
+                    LogInfo( ( "Receive file created. Opened path: %s", realFilePath ) );
                 }
                 else
                 {
                     result = OTA_PAL_COMBINE_ERR( OtaPalRxFileCreateFailed, errno );
-                    LogError( ( "Failed to start operation: Operation already started. failed to open -- %s Path ", C->pFilePath ) );
+                    LogError( ( "Failed to start operation: Operation already started. failed to open Path: %s ", realFilePath ) );
                 }
             }
             else

@@ -560,7 +560,6 @@ int16_t otaPal_WriteBlock( OtaFileContext_t * const C,
             else
             {
                 filerc = ( int32_t ) writeSize;
-                usleep(500000); //Sleep for 0.5 sec for presigned url
             }
         }
         else

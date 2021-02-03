@@ -1255,10 +1255,10 @@ static OtaMqttStatus_t mqttSubscribe( const char * pTopicFilter,
     if( pthread_mutex_lock( &mqttMutex ) == 0 )
     {
         /* Send SUBSCRIBE packet. */
-        // mqttStatus = MQTT_Subscribe( pMqttContext,
-        //                              pSubscriptionList,
-        //                              sizeof( pSubscriptionList ) / sizeof( MQTTSubscribeInfo_t ),
-        //                              MQTT_GetPacketId( pMqttContext ) );
+        mqttStatus = MQTT_Subscribe( pMqttContext,
+                                     pSubscriptionList,
+                                     sizeof( pSubscriptionList ) / sizeof( MQTTSubscribeInfo_t ),
+                                     MQTT_GetPacketId( pMqttContext ) );
 
         mqttStatus = MQTTSuccess;
         pthread_mutex_unlock( &mqttMutex );

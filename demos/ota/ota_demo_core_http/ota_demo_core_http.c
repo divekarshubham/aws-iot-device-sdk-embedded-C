@@ -1743,6 +1743,7 @@ static OtaMqttStatus_t mqttPublish( const char * const pTopic,
 {
     OtaMqttStatus_t otaRet = OtaMqttSuccess;
 
+    uint8_t numRetries = 3;
     MQTTStatus_t mqttStatus = MQTTBadParameter;
     MQTTPublishInfo_t publishInfo = { 0 };
     MQTTContext_t * pMqttContext = &mqttContext;
@@ -1756,9 +1757,19 @@ static OtaMqttStatus_t mqttPublish( const char * const pTopic,
 
     if( pthread_mutex_lock( &mqttMutex ) == 0 )
     {
-        mqttStatus = MQTT_Publish( pMqttContext,
-                                   &publishInfo,
-                                   ( qos ) ? MQTT_GetPacketId( pMqttContext ) : 0U );
+        while( mqttStatus != MQTTSuccess && numRetries > 0 )
+        {
+            mqttStatus = MQTT_Publish( pMqttContext,
+                                    &publishInfo,
+                                    MQTT_GetPacketId( pMqttContext ) );
+            if( qos == 1 )
+            {
+                /* Loop to receive packet from transport interface. */
+                mqttStatus = MQTT_ReceiveLoop( &mqttContext, MQTT_PROCESS_LOOP_TIMEOUT_MS );
+            }
+
+            numRetries--;
+        }
 
         pthread_mutex_unlock( &mqttMutex );
     }
@@ -2134,6 +2145,17 @@ int main( int argc,
         /* Start OTA demo. */
         returnStatus = startOTADemo();
     }
+
+    /* Wait and log message before disconnecting from the connection. */
+    while( waitTimeoutMs > 0 )
+    {
+        Clock_SleepMs( OTA_EXAMPLE_TASK_DELAY_MS );
+        waitTimeoutMs -= OTA_EXAMPLE_TASK_DELAY_MS;
+
+        LogError( ( "Disconnecting in %d sec", waitTimeoutMs / 1000 ) );
+    }
+
+    waitTimeoutMs = OTA_DEMO_EXIT_TIMEOUT_MS;
 
     /* Disconnect from broker and close connection. */
     disconnect();

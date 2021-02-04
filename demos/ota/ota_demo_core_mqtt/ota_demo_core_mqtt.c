@@ -1309,8 +1309,10 @@ static OtaMqttStatus_t mqttPublish( const char * const pacTopic,
                                     uint32_t msgSize,
                                     uint8_t qos )
 {
+    
     OtaMqttStatus_t otaRet = OtaMqttSuccess;
 
+    uint8_t numRetries = 3;
     MQTTStatus_t mqttStatus = MQTTBadParameter;
     MQTTPublishInfo_t publishInfo = { 0 };
     MQTTContext_t * pMqttContext = &mqttContext;
@@ -1324,13 +1326,18 @@ static OtaMqttStatus_t mqttPublish( const char * const pacTopic,
 
     if( pthread_mutex_lock( &mqttMutex ) == 0 )
     {
-        mqttStatus = MQTT_Publish( pMqttContext,
-                                   &publishInfo,
-                                   MQTT_GetPacketId( pMqttContext ) );
-        if( qos == 1 )
+        while( mqttStatus != MQTTSuccess && numRetries > 0 )
         {
-            /* Loop to receive packet from transport interface. */
-            mqttStatus = MQTT_ReceiveLoop( &mqttContext, MQTT_PROCESS_LOOP_TIMEOUT_MS );
+            mqttStatus = MQTT_Publish( pMqttContext,
+                                    &publishInfo,
+                                    MQTT_GetPacketId( pMqttContext ) );
+            if( qos == 1 )
+            {
+                /* Loop to receive packet from transport interface. */
+                mqttStatus = MQTT_ReceiveLoop( &mqttContext, MQTT_PROCESS_LOOP_TIMEOUT_MS );
+            }
+
+            numRetries--;
         }
 
         pthread_mutex_unlock( &mqttMutex );

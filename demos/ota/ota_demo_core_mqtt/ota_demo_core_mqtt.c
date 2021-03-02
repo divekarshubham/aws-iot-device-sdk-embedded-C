@@ -1333,12 +1333,6 @@ static OtaMqttStatus_t mqttPublish( const char * const pacTopic,
                                        &publishInfo,
                                        MQTT_GetPacketId( pMqttContext ) );
 
-            if( qos == 1 )
-            {
-                /* Loop to receive packet from transport interface. */
-                mqttStatus = MQTT_ReceiveLoop( &mqttContext, MQTT_PROCESS_LOOP_TIMEOUT_MS );
-            }
-
             if( mqttStatus != MQTTSuccess )
             {
                 /* Generate a random number and get back-off value (in milliseconds) for the next connection retry. */
@@ -1355,6 +1349,12 @@ static OtaMqttStatus_t mqttPublish( const char * const pacTopic,
                                ( unsigned short ) nextRetryBackOff ) );
                     Clock_SleepMs( nextRetryBackOff );
                 }
+
+                /* Disconnect from broker and close connection. */
+                disconnect();
+
+                /* Connect to MQTT broker and create MQTT connection. */
+                establishConnection();
             }
         } while( ( mqttStatus != MQTTSuccess ) && ( backoffAlgStatus == BackoffAlgorithmSuccess ) );
 

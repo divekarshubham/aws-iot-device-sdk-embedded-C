@@ -1327,36 +1327,9 @@ static OtaMqttStatus_t mqttPublish( const char * const pacTopic,
 
     if( pthread_mutex_lock( &mqttMutex ) == 0 )
     {
-        do
-        {
             mqttStatus = MQTT_Publish( pMqttContext,
                                        &publishInfo,
                                        MQTT_GetPacketId( pMqttContext ) );
-
-            if( mqttStatus != MQTTSuccess )
-            {
-                /* Generate a random number and get back-off value (in milliseconds) for the next connection retry. */
-                backoffAlgStatus = BackoffAlgorithm_GetNextBackoff( &reconnectParams, generateRandomNumber(), &nextRetryBackOff );
-
-                if( backoffAlgStatus == BackoffAlgorithmRetriesExhausted )
-                {
-                    LogError( ( "Publish failed, all attempts exhausted." ) );
-                }
-                else if( backoffAlgStatus == BackoffAlgorithmSuccess )
-                {
-                    LogWarn( ( "Publish failed. Retrying connection "
-                               "after %hu ms backoff.",
-                               ( unsigned short ) nextRetryBackOff ) );
-                    Clock_SleepMs( nextRetryBackOff );
-                }
-
-                /* Disconnect from broker and close connection. */
-                disconnect();
-
-                /* Connect to MQTT broker and create MQTT connection. */
-                establishConnection();
-            }
-        } while( ( mqttStatus != MQTTSuccess ) && ( backoffAlgStatus == BackoffAlgorithmSuccess ) );
 
         pthread_mutex_unlock( &mqttMutex );
     }
